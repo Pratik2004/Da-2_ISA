@@ -1,13 +1,125 @@
+Sure! I'll explain each line of the code:
+
+```python
 import numpy as np
+```
 This line imports the NumPy library, which is a popular library for numerical computations in Python.
 
-python
+```python
 class FullyConnectedLayer:
-This line defines a class named FullyConnectedLayer, which represents a fully connected layer in a neural network.
+```
+This line defines a class named `FullyConnectedLayer`, which represents a fully connected layer in a neural network.
 
-python
+```python
     def __init__(self, input_size, output_size):
-This is the initializer method of the FullyConnectedLayer class. It gets called when an instance of the class is created and initializes the weights and biases of the layer based on the specified input_size and output_size.
+```
+This is the initializer method of the `FullyConnectedLayer` class. It gets called when an instance of the class is created and initializes the weights and biases of the layer based on the specified `input_size` and `output_size`.
 
-python
+```python
         self.weights = np.random.randn(input_size, output_size)
+```
+This line initializes the `weights` attribute of the `FullyConnectedLayer` instance with random values drawn from a standard normal distribution using NumPy's `np.random.randn()` function.
+
+```python
+        self.biases = np.zeros(output_size)
+```
+This line initializes the `biases` attribute of the `FullyConnectedLayer` instance with zeros using NumPy's `np.zeros()` function.
+
+```python
+    def forward(self, inputs):
+```
+This is the forward method of the `FullyConnectedLayer` class. It performs the forward pass computation of the layer given an input and returns the output of the layer.
+
+```python
+        self.inputs = inputs
+```
+This line stores the input in the `inputs` attribute of the `FullyConnectedLayer` instance.
+
+```python
+        self.output = np.dot(inputs, self.weights) + self.biases
+```
+This line computes the output of the layer by performing a dot product between the input and the weights, and then adding the biases to the result.
+
+```python
+        return self.output
+```
+This line returns the computed output of the layer.
+
+```python
+    def backward(self, grad_output, learning_rate):
+```
+This is the backward method of the `FullyConnectedLayer` class. It performs the backward pass computation of the layer given the gradient of the loss with respect to the layer's output (`grad_output`) and the learning rate (`learning_rate`).
+
+```python
+        grad_input = np.dot(grad_output, self.weights.T)
+```
+This line computes the gradient of the loss with respect to the layer's input by performing a dot product between the gradient of the loss with respect to the layer's output and the transpose of the weights.
+
+```python
+        grad_weights = np.dot(self.inputs.T, grad_output)
+```
+This line computes the gradient of the loss with respect to the layer's weights by performing a dot product between the transpose of the inputs and the gradient of the loss with respect to the layer's output.
+
+```python
+        grad_biases = np.sum(grad_output, axis=0)
+```
+This line computes the gradient of the loss with respect to the layer's biases by summing the gradient of the loss with respect to the layer's output along the axis 0 (columns).
+
+```python
+        self.weights -= learning_rate * grad_weights
+```
+This line updates the weights of the layer by subtracting the product of the learning rate and the gradient of the loss with respect to the weights.
+
+```python
+        self.biases -= learning_rate * grad_biases
+```
+This line updates the biases of the layer by subtracting the product of the learning rate and the gradient of the loss with respect to the biases.
+
+```python
+        return grad_input
+```
+This line returns the computed gradient of the loss with respect to the layer's input.
+
+```python
+class ReLUActivation:
+```
+This line defines a class named `ReLUActivation`, which represents the rectified linear unit activation function.
+
+```python
+    def forward(self, inputs):
+```
+This is the forward method of the `ReLUActivation` class. It performs the forward pass computation of the activation function given an input and returns the output.
+
+```python
+        self.inputs = inputs
+```
+This line stores the input in the `inputs` attribute of the `ReLUActivation` instance.
+
+```python
+        return np.maximum(0, inputs)
+```
+This line applies the rectified linear unit function element-wise to the input using NumPy's `np.maximum()` function, which returns the maximum value between 0 and the input element.
+
+```python
+    def backward(self, grad_output):
+```
+This is the backward method of the `ReLUActivation` class. It performs the backward pass computation of the activation function given the gradient of the loss with respect to the activation function's output (`grad_output`).
+
+```python
+        grad_input = grad_output.copy()
+```
+This line creates a copy of the gradient of the loss with respect to the activation function's output.
+
+```python
+        grad_input[self.inputs < 0] = 0
+```
+This line sets the elements of the copied gradient to 0 where the corresponding elements of the stored inputs are less than 0, effectively zeroing out negative gradients.
+
+```python
+        return grad_input
+```
+This line returns the computed gradient of the loss with respect to the activation function's input.
+
+The remaining lines demonstrate the usage of the defined classes, where instances of `FullyConnectedLayer` and `ReLUActivation` are created, and forward and backward passes are performed on randomly generated inputs.
+
+Please note that this code represents a simple implementation of a fully connected layer and ReLU activation for learning purposes and may not include all the necessary optimizations and functionality needed for practical applications.
