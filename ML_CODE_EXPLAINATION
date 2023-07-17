@@ -1,0 +1,13 @@
+import numpy as np
+This line imports the NumPy library, which is a popular library for numerical computations in Python.
+
+python
+class FullyConnectedLayer:
+This line defines a class named FullyConnectedLayer, which represents a fully connected layer in a neural network.
+
+python
+    def __init__(self, input_size, output_size):
+This is the initializer method of the FullyConnectedLayer class. It gets called when an instance of the class is created and initializes the weights and biases of the layer based on the specified input_size and output_size.
+
+python
+        self.weights = np.random.randn(input_size, output_size)
